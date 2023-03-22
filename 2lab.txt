@@ -1,0 +1,39 @@
+.LC0:
+        .string "\320\222\320\262\320\265\320\264\320\270\321\202\320\265 \321\207\320\270\321\201\320\273\320\276 \320\264\320\273\321\217 \320\277\320\276\320\273\321\203\321\207\320\265\320\275\320\270\321\217 \320\265\320\263\320\276 \320\272\320\262\320\260\320\264\321\200\320\260\321\202\320\275\320\276\320\263\320\276 \320\272\320\276\321\200\320\275\321\217: "
+.LC1:
+        .string "%d"
+.LC2:
+        .string "\320\225\320\263\320\276 \320\272\320\262\320\260\320\264\321\200\320\260\321\202\320\275\321\213\320\271 \320\272\320\276\321\200\320\265\320\275\321\214 = %d\n"
+main:
+        push    rbp // начало функции
+        mov     rbp, rsp // команда mov копирует из rsp в rbp
+        sub     rsp, 16 // разность
+        mov     edi, OFFSET FLAT:.LC0 // ввод printf
+        mov     eax, 0
+        call    printf // вызов printf
+        mov     DWORD PTR [rbp-4], 1 // переменная k со значением 1
+        mov     DWORD PTR [rbp-8], 0 // переменная x со значением 0
+        mov     DWORD PTR [rbp-12], 0 // переменная sum со значением 0
+        lea     rax, [rbp-16]
+        mov     rsi, rax
+        mov     edi, OFFSET FLAT:.LC1
+        mov     eax, 0
+        call    __isoc99_scanf // вызов scanf
+        jmp     .L2 // начало цикла
+.L3:
+        mov     eax, DWORD PTR [rbp-4] // sum+=k;
+        add     DWORD PTR [rbp-12], eax
+        add     DWORD PTR [rbp-4], 2 // k+=2;
+        add     DWORD PTR [rbp-8], 1 // x++;
+.L2:
+        mov     eax, DWORD PTR [rbp-16] // условие цикла
+        cmp     DWORD PTR [rbp-12], eax // сравнение в условии
+        jl      .L3
+        mov     eax, DWORD PTR [rbp-8] //вывод printf
+        mov     esi, eax
+        mov     edi, OFFSET FLAT:.LC2
+        mov     eax, 0
+        call    printf
+        mov     eax, 0
+        leave
+        ret
